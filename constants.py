@@ -42,7 +42,7 @@ DOCUMENT_MAP = {
 
 # Default Instructor Model
 EMBEDDING_MODEL_NAME = "hkunlp/instructor-large" # Uses 1.5 GB of VRAM (High Accuracy with lower VRAM usage)
-
+EMBEDDING_MODEL_NAME = "intfloat/e5-small-v2"#ahmed!!!!!!!!!!
 ####
 #### OTHER EMBEDDING MODEL OPTIONS
 ####
@@ -141,8 +141,9 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 ### (*** Requires using intfloat/e5-small-v2 instead of hkunlp/instructor-large as embedding model ***)
 
 ### 7b GPTQ Models for 8GB GPUs
-# MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ"
+MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ"
 # MODEL_BASENAME = "Wizard-Vicuna-7B-Uncensored-GPTQ-4bit-128g.no-act.order.safetensors"
+MODEL_BASENAME = "model.safetensors"#ahmed!!!!!!!!!!
 # MODEL_ID = "TheBloke/WizardLM-7B-uncensored-GPTQ"
 # MODEL_BASENAME = "WizardLM-7B-uncensored-GPTQ-4bit-128g.compat.no-act-order.safetensors"
 # MODEL_ID = "TheBloke/wizardLM-7B-GPTQ"
