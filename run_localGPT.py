@@ -22,6 +22,12 @@ from transformers import (
 )
 
 from constants import EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME
+from langchain.vectorstores import FAISS
+
+import os
+from langchain.vectorstores.base import VectorStoreRetriever
+
+
 
 
 def load_model(device_type, model_id, model_basename=None):
@@ -185,14 +191,12 @@ def main(device_type, show_sources):
     # uncomment the following line if you used HuggingFaceEmbeddings in the ingest.py
     # embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
 
-    # load the vectorstore
-    db = Chroma(
-        persist_directory=PERSIST_DIRECTORY,
-        embedding_function=embeddings,
+    # Load the Faiss index
+    index_path = os.path.join(PERSIST_DIRECTORY, "faiss_index.faiss")
+    new_db = FAISS.load_local(index_path, embeddings)
+    retriever = VectorStoreRetriever(vectorstore=new_db)
 
-    )
-    retriever = db.as_retriever()
-    
+
 
     template = """Use the following pieces of context to answer the question at the end. If you don't know the answer,\
     just say that you don't know, don't try to make up an answer.
