@@ -6,10 +6,9 @@ import click
 import torch
 from langchain.docstore.document import Document
 from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.vectorstores import Neo4jVector
 from langchain.text_splitter import Language, RecursiveCharacterTextSplitter
 
-#ahmed
-from langchain.vectorstores import FAISS
 
 from constants import (
     DOCUMENT_MAP,
@@ -120,6 +119,7 @@ def split_documents(documents: list[Document]) -> tuple[list[Document], list[Doc
 def main(device_type):
     # Load documents and split in chunks
     logging.info(f"Loading documents from {SOURCE_DIRECTORY}")
+    print(SOURCE_DIRECTORY,EMBEDDING_MODEL_NAME)
     documents = load_documents(SOURCE_DIRECTORY)
     text_documents, python_documents = split_documents(documents)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -130,12 +130,28 @@ def main(device_type):
     texts.extend(python_splitter.split_documents(python_documents))
     logging.info(f"Loaded {len(documents)} documents from {SOURCE_DIRECTORY}")
     logging.info(f"Split into {len(texts)} chunks of text")
+    url = "neo4j+s://96690cc7.databases.neo4j.io"
+    username = "neo4j"
+    password = "rRZAanB5uC7y-0CePWU_YJhReIEdg8sNsOqOa5MOiW4"
+    # Wait 60 seconds before connecting using these details, or login to https://console.neo4j.io to validate the Aura Instance is available
+    # NEO4J_URI=neo4j+s://96690cc7.databases.neo4j.io
+    # NEO4J_USERNAME=neo4j
+    # NEO4J_PASSWORD=rRZAanB5uC7y-0CePWU_YJhReIEdg8sNsOqOa5MOiW4
+    # AURA_INSTANCEID=96690cc7
+    # AURA_INSTANCENAME=Instance01
 
     # Create embeddings
     embeddings = HuggingFaceInstructEmbeddings(model_name=EMBEDDING_MODEL_NAME, model_kwargs={"device": device_type})
-
-    db_new = FAISS.from_documents(texts, embeddings)
-    db_new.save_local(os.path.join(PERSIST_DIRECTORY, "faiss_index.faiss"))
+    print(device_type)
+    print(embeddings)
+    print(username)
+    print(password)
+    print(url)
+    # print(texts)
+    db = Neo4jVector.from_documents(
+    texts, embeddings, url=url, username=username, password=password
+    )
+    
 
 
     # change the embedding type here if you are running into issues.

@@ -9,9 +9,9 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.llms import HuggingFacePipeline, LlamaCpp
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
+from langchain.vectorstores import Neo4jVector
 
 # from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.vectorstores import Chroma
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -22,12 +22,6 @@ from transformers import (
 )
 
 from constants import EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME
-from langchain.vectorstores import FAISS
-
-import os
-from langchain.vectorstores.base import VectorStoreRetriever
-
-
 
 
 def load_model(device_type, model_id, model_basename=None):
@@ -191,13 +185,21 @@ def main(device_type, show_sources):
     # uncomment the following line if you used HuggingFaceEmbeddings in the ingest.py
     # embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
 
-    # Load the Faiss index
-    index_path = os.path.join(PERSIST_DIRECTORY, "faiss_index.faiss")
-    new_db = FAISS.load_local(index_path, embeddings)
-    retriever = VectorStoreRetriever(vectorstore=new_db)
+    # load the vectorstore
+    
+    index_name = "vector"  # default index name
+    url = "neo4j+s://96690cc7.databases.neo4j.io"
+    username = "neo4j"
+    password = "rRZAanB5uC7y-0CePWU_YJhReIEdg8sNsOqOa5MOiW4"
 
-
-
+    store = Neo4jVector.from_existing_index(
+        embeddings,
+        url=url,
+        username=username,
+        password=password,
+        index_name=index_name,
+    )    
+    retriever = store.as_retriever()
     template = """Use the following pieces of context to answer the question at the end. If you don't know the answer,\
     just say that you don't know, don't try to make up an answer.
 
