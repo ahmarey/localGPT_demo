@@ -42,6 +42,7 @@ DOCUMENT_MAP = {
 
 # Default Instructor Model
 EMBEDDING_MODEL_NAME = "hkunlp/instructor-large" # Uses 1.5 GB of VRAM (High Accuracy with lower VRAM usage)
+EMBEDDING_MODEL_NAME = "intfloat/e5-small-v2"#ahmed!!!!!!!!!!
 
 ####
 #### OTHER EMBEDDING MODEL OPTIONS
@@ -83,9 +84,11 @@ EMBEDDING_MODEL_NAME = "hkunlp/instructor-large" # Uses 1.5 GB of VRAM (High Acc
 # MODEL_ID = "TheBloke/Llama-2-13b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-13b-chat.Q4_K_M.gguf"
 
-MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
-MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
-
+# MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
+# MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
+MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ"
+# MODEL_BASENAME = "Wizard-Vicuna-7B-Uncensored-GPTQ-4bit-128g.no-act.order.safetensors"
+MODEL_BASENAME = "model.safetensors"#ahmed!!!!!!!!!!
 # MODEL_ID = "TheBloke/Llama-2-70b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-70b-chat.Q4_K_M.gguf"
 
